@@ -1,0 +1,18 @@
+[
+  {
+    "modid": "praescriptum",
+    "name": "Praescriptum",
+    "description": "Provides a way to implement recipes and a way to use them.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [
+      "estebes"
+    ],
+    "credits": "Player, Chocohead, Aroma",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]

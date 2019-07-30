@@ -1,0 +1,71 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url = "https://files.minecraftforge.net/maven" }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+apply plugin: 'idea'
+
+version = "1.0"
+group = "estebes.praescriptum"
+archivesBaseName = "Praescriptum"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    maven {
+        // JEI
+        name "JEI"
+        url "https://dvs1.progwml6.com/files/maven"
+    }
+}
+
+def ENV = System.getenv()
+if (ENV.BUILD_NUMBER) {
+    version = version + "." + "${System.getenv().BUILD_NUMBER}"
+}
+
+minecraft {
+    version = "1.12.2-14.23.5.2838"
+    mappings = "snapshot_20171003"
+    replace "@MODVERSION@", project.version
+    useDepAts = true
+    runDir = "run"
+}
+
+dependencies {
+    deobfCompile "mezz.jei:jei_1.12.2:+"
+
+    compile "org.apache.logging.log4j:log4j-slf4j-impl:${project.slf4j_version}" // Logging
+    compile "com.github.ben-manes.caffeine:caffeine:${project.caffeine_version}"
+}
+
+processResources {
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+
+        // replace version and mcversion
+        expand 'version': project.version, 'mcversion': project.minecraft.version
+    }
+
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+
+    // Move access transformers to META-INF
+    rename '(.+_at.cfg)', 'META-INF/$1'
+}
