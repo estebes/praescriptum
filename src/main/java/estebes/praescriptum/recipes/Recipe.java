@@ -17,7 +17,7 @@ import estebes.praescriptum.ingredients.output.ItemStackOutputIngredient;
 import estebes.praescriptum.ingredients.output.OutputIngredient;
 import net.minecraftforge.fluids.FluidStack;
 
-public class Recipe implements Serializable, Cloneable {
+public class Recipe implements Serializable {
 	public Recipe(RecipeHandler manager) {
 		this.manager = manager;
 	}
@@ -103,17 +103,6 @@ public class Recipe implements Serializable, Cloneable {
 
 		if (!success) LogUtils.LOGGER.warn("Registration failed for input " + this);
 	}
-
-	// Cloneable >>
-	@Override
-	protected Recipe clone() {
-		return new Recipe(manager)
-			.withInput(inputIngredients)
-			.withOutput(outputIngredients)
-			.withEnergyCostPerTick(energyCostPerTick)
-			.withOperationDuration(operationDuration);
-	}
-	// << Cloneable
 
 	// Getters >>
 	public List<InputIngredient> getInputIngredients() {
